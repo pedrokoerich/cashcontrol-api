@@ -1,0 +1,43 @@
+package br.univille.projapifso2024b;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
+
+import br.univille.projapifso2024b.entity.Cliente;
+import br.univille.projapifso2024b.service.ClienteService;
+
+@SpringBootTest
+@ContextConfiguration
+@ActiveProfiles(profiles = "test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+
+public class ClienteServiceTests {
+    @Autowired
+    private ClienteService service;
+    
+    @Test
+    public void getAllClientesEmpty() {
+        var listaClientes = service.getAll();
+        assertEquals(listaClientes.size(), 0);
+    }
+
+    @Test
+    public void saveCliente() {
+        var cliente = new Cliente();
+        cliente.setNome("Rakuko");
+        service.save(cliente);
+
+        var clienteConsulta = service.findById(1);
+        assertNotNull(clienteConsulta);
+        assertEquals(clienteConsulta.getNome(), "Rakuko");
+    }
+
+}

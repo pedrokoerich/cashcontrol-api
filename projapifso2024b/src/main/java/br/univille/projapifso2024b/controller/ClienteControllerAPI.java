@@ -1,11 +1,16 @@
 package br.univille.projapifso2024b.controller;
 
 import org.springframework.web.bind.annotation.RestController;
-import org.apache.catalina.connector.Response;
+
+import br.univille.projapifso2024b.entity.Cliente;
+import br.univille.projapifso2024b.service.ClienteService;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.GetMapping;
 
 
@@ -14,21 +19,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/api/v1/clientes")
 
 public class ClienteControllerAPI {
-    
+    @Autowired
+    private ClienteService service;
+
     @GetMapping()
-    public ResponseEntity<String> getClientes(){
-        return new ResponseEntity<String>("MARIO", HttpStatus.OK);
+    public ResponseEntity<List<Cliente>> getClientes(){
+        var listaClientes  = service.getAll();
+        return new ResponseEntity<List<Cliente>>(listaClientes, HttpStatus.OK);
     }
 
-    class Cliente {
-        private String nome;
-        public Cliente (String nome) {
-            this.nome = nome;
-        }
-
-        public String getNome() {
-            return this.nome;
-        }
-    }
 }
 
